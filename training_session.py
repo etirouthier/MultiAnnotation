@@ -44,8 +44,10 @@ def main(command_line_arguments=None):
         local.
     """
     args = _parse_arguments(command_line_arguments)
-    dna_directory = os.path.join(os.getcwd(), 'seq_chr', args.specie)
-    annotation_dir = os.path.join(os.getcwd(), 'Start_data', args.specie)
+    dna_directory = os.path.join(os.path.dirname(__file__), 'seq_chr',
+                                 args.specie)
+    annotation_dir = os.path.join(os.path.dirname(__file__),
+                                  'Start_data', args.specie)
 
     if not os.path.exists(os.path.join(dna_directory, 'chr1.hdf5')):
         fasta_reader.main(['--directory', dna_directory,
@@ -58,7 +60,8 @@ def main(command_line_arguments=None):
                                                    'ref' + args.annotation + '.csv'),
                             '--balance_factor', '100', 
                             '--max_chr', args.max_chr])
-    results_dir = os.path.join(os.getcwd(), 'Results_multi', args.specie)
+    results_dir = os.path.join(os.path.dirname(__file__),
+                               'Results_multi', args.specie)
 
     if not os.path.exists(results_dir):
         os.mkdir(results_dir)

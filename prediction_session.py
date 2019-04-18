@@ -85,15 +85,16 @@ def main(command_line_arguments=None):
         The model was trained on a specie that is specified.
     """
     args = _parse_arguments(command_line_arguments)
-    dna_directory = os.path.join(os.getcwd(), 'seq_chr', args.predicted_specie)
-    annotation_dir = os.path.join(os.getcwd(),
+    dna_directory = os.path.join(os.path.dirname(__file__),
+                                 'seq_chr', args.predicted_specie)
+    annotation_dir = os.path.join(os.path.dirname(__file__),
                                   'Start_data',
                                   args.predicted_specie)
-    path_to_model = os.path.join(os.getcwd(), 'Results_multi',
+    path_to_model = os.path.join(os.path.dirname(__file__), 'Results_multi',
                                  args.training_specie,
                                  'weights_CNN_' + args.annotation + '_' + \
                                  args.training_specie + '.hdf5' )
-    results_dir = os.path.join(os.getcwd(), 'Results_multi',
+    results_dir = os.path.join(os.path.dirname(__file__), 'Results_multi',
                                args.predicted_specie)
 
     # Verification of the existence of the data on the chromosome we want to
