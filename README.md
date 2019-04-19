@@ -4,7 +4,7 @@ This project is aimed at predicting the position of a given annotation along the
 
 ### What are the data needed ?
 
-For every specie the data need to be the chromosome in .fa.gz format with one file per chromosome. We need also a csv file named
+For every specie the data need to be the chromosome in .fa.gz format with one file per chromosome. The module fa_to_multi_fa.py can be used to separate a fa file with several chromosome into several uni-chromosome file. We need also a csv file named
 refAnnotation.csv that contains columns Chr, Start, Stop, Strand (the model will be trained to predict the begining of the 
 annotation in the reading direction). All those data need to be stored in a directory named as the specie.
 
