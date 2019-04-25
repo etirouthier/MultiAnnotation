@@ -86,8 +86,7 @@ def generating_tss(max_chr, refGene_file, directory):
     """
     index = range(1, int(max_chr) + 1)
 
-    path_to_directory = os.path.join(os.path.dirname(directory),
-                                     str(directory)+ '/')
+    path_to_directory = os.path.abspath(directory)
     
     try:
         refGene_new = pd.read_csv(refGene_file)
@@ -97,7 +96,8 @@ def generating_tss(max_chr, refGene_file, directory):
 
     for i in index:
         print 'generating positively labeled sequences for chr' + str(i)
-        f = h5py.File(path_to_directory + 'chr' + str(i) + '.hdf5', 'r')
+        f = h5py.File(os.path.join(path_to_directory,'chr' + str(i) + '.hdf5'),
+                      'r')
         seq = np.array(f[f.keys()[0]])
         f.close()
 
@@ -165,9 +165,7 @@ def generating_non_tss(max_chr, n, refGene_file, directory):
         directory: name of the directory containing the DNA sequence
     """
     index = range(1, int(max_chr) + 1)
-
-    path_to_directory = os.path.join(os.path.dirname(directory),
-                                     str(directory) + '/')
+    path_to_directory = os.path.abspath(directory)
 
     try:
         refGene_new = pd.read_csv(refGene_file)
@@ -177,7 +175,8 @@ def generating_non_tss(max_chr, n, refGene_file, directory):
 
     for i in index:
         print 'generating negatively labeled sequences for chr' + str(i)
-        f = h5py.File(path_to_directory + 'chr' + str(i) + '.hdf5', 'r')
+        f = h5py.File(os.path.join(path_to_directory,'chr' + str(i) + '.hdf5'),
+                      'r')
         seq = np.array(f[f.keys()[0]])
         f.close()
 
