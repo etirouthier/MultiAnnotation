@@ -34,11 +34,13 @@ def _parse_arguments(args=None):
 def gene_position(refGene_file, directory):
     """
         Create a numpy file for every chromosome containing the inidicative 
-        function of the Open reading Frame (without exons).
+        function of the Open reading Frame.
         
         Args:
         refGene_file: path of the csv file with Start, Stop of every gene for 
-                      every Chr.
+                      every Chr. (or for every exons if we do not went to
+                      take introns into account).
+        directory: the output directory.
     """
     refGene_new = pd.read_csv(refGene_file)
     refGene_new = refGene_new.dropna(axis=1)
