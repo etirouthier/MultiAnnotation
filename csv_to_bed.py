@@ -56,7 +56,7 @@ def main(command_line_arguments=None):
         bedfile = bedfile.append(bedfile_)
         
     bedfile.to_csv(path_or_buf=path_to_file[:-3] + 'bed',
-                   sep='\t')
+                   sep='\t', index=False)
         
 if __name__ == '__main__':
     main()
