@@ -35,13 +35,14 @@ def _parse_arguments(args=None):
     return parser.parse_args(args)
 
 def _data_loader(directory, annotation, batch_size):
-    path_to_directory = os.path.dirname(os.path.dirname(directory))
-    path_to_directory = os.path.join(path_to_directory,
+    path_to_directory = os.path.join(os.path.dirname(__file__),
                                      'Start_data',
-                                     directory + '/')
+                                     os.path.basename(directory))
     
-    x_0 = np.load(path_to_directory + 'X0_start_' + annotation + '.npy')
-    x_1 = np.load(path_to_directory + 'X1_start_' + annotation + '.npy')
+    x_0 = np.load(os.path.join(path_to_directory,
+                               'X0_start_' + annotation + '.npy'))
+    x_1 = np.load(os.path.join(path_to_directory,
+                               'X1_start_' + annotation + '.npy'))
 
     x_ = np.append(x_0, x_1, axis=0)
     y_1 = np.ones((x_1.shape[0]))
@@ -109,7 +110,8 @@ def main(command_line_arguments=None):
                           patience=10,
                           verbose=0,
                           mode='auto')
-    tensorboard = TensorBoard(log_dir=os.path.join(os.getcwd(), 'Tensorboard'),
+    tensorboard = TensorBoard(log_dir=os.path.join(os.path.dirname(__file__),
+                                                   'Tensorboard'),
                               update_freq=200)
 
     if args.continuous:
@@ -151,8 +153,10 @@ def main(command_line_arguments=None):
                             callbacks=[checkpointer, early, tensorboard])
         
         # remove the Tensorboard summary after the training
-        for element in os.listdir(os.path.join(os.getcwd(), 'Tensorboard')):
-            os.remove(os.path.join(os.getcwd(), 'Tensorboard', element))
+        for element in os.listdir(os.path.join(os.path.dirname(__file__),
+                                               'Tensorboard')):
+            os.remove(os.path.join(os.path.dirname(__file__),
+                                   'Tensorboard', element))
 
 if __name__ == '__main__':
     main()
