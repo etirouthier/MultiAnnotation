@@ -14,7 +14,8 @@ annotation in the reading direction). All those data need to be stored in a dire
 described in the previous section.
 - To load the data from several specie use *~/MultiAnnotation$ load_multi _species.sh directory* with directory containing several 
 species directory.
-- To download the data needed to predict the TSS from UCSC browser use *~/MultiAnnotation$ download_data.sh specie assembly*. Specie is the name of the specie and assembly is the name of its consensus sequence. The sequence need to be available in chromosome and not scaffold (with chromosome name chr1, ...). The refGene need to contains at least 11 columns (with num, name, chr, strand, start, stop, cdsStart, cdsStop, exonStarts, exonEnds). After using this script the data will be ready for training or prediction.
+- To download the data needed to predict the TSS from UCSC browser use *~/MultiAnnotation$ download_data.sh specie assembly USCS*. Specie is the name of the specie and assembly is the name of its consensus sequence. The sequence need to be available in chromosome and not scaffold (with chromosome name chr1, ...). The refGene need to contains at least 11 columns (with num, name, chr, strand, start, stop, cdsStart, cdsStop, exonStarts, exonEnds). After using this script the data will be ready for training or prediction.
+- To download the data needed to predict the TSS from NCBI browser use *~/MultiAnnotation$ download_data.sh specie assembly NCBI*. The data can be either in scaffold or chromosome (in rare case the name of contig are none of them, the script will not work). When the data are in scaffold the low limit of scaffold length is set to 50000 bp otherwise the number of files is too high (this parameter can nonetheless be tuned in analysis_refGene.py). 
 
 ### How to train and predict with a model ?
 
