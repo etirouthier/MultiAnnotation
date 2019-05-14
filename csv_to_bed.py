@@ -33,9 +33,10 @@ def main(command_line_arguments=None):
         path_to_file = args.file
     else:
         # used frealy in command line
-        path_to_file = os.path.join(os.path.dirname(args.file),
+        path_to_file = os.path.join(os.path.dirname(__file__),
                                     'Results_multi',
-                                    args.file)
+                                    os.path.basename(os.path.dirname(args.file)),
+                                    os.path.basename(args.file))
     prediction = pd.read_csv(path_to_file)
     bedfile = pd.DataFrame()
     
@@ -43,8 +44,8 @@ def main(command_line_arguments=None):
         bedfile_ = pd.DataFrame()
         y_pred = prediction[prediction.Chr == chrom].prediction.values
         
-        start = np.arange(0, len(y_pred) - 100, 100)
-        stop = np.arange(100, len(y_pred), 100)
+        start = np.arange(149, len(y_pred) - 100, 100)
+        stop = np.arange(249, len(y_pred), 100)
         
         score = np.array([np.mean(y_pred[i : i + 100]) for i in start])
         

@@ -32,6 +32,20 @@ class DataLoader:
         res = (np.arange(nucleotid.max()) == nucleotid[..., None]-1).astype(int)
         res = res.reshape(res.shape[0], res.shape[2])
         return res
+    
+    def _reverse_dna(self, nucleotid):
+        np.place(nucleotid, nucleotid == 1., [5])
+        np.place(nucleotid, nucleotid == 2., [6])
+        np.place(nucleotid, nucleotid == 3., [7])
+        np.place(nucleotid, nucleotid == 4., [8])
+
+        np.place(nucleotid, nucleotid == 5., [2])
+        np.place(nucleotid, nucleotid == 6., [1])
+        np.place(nucleotid, nucleotid == 7., [4])
+        np.place(nucleotid, nucleotid == 8., [3])
+
+        reverse = np.flip(nucleotid, axis=0)
+        return reverse
 
     def process(self):
         """
@@ -48,14 +62,22 @@ class DataLoader:
         f = h5py.File(path_to_directory + 'chr' + str(self.num_chr) + '.hdf5')
         seq = np.array(f[f.keys()[0]])
         f.close()
-
+        
+        reverse = self._reverse_dna(seq)
+        
         seq = self._one_hot_encoder(seq)
+        reverse = self._one_hot_encoder(reverse)
         seq_slide = rolling_window(seq, window=(WX, 4),
                                    asteps=None, wsteps=None,
                                    axes=None, toend=True)
         seq = seq_slide.reshape(seq_slide.shape[0], WX, 4, 1)
+        
+        reverse_slide = rolling_window(reverse, window=(WX, 4),
+                                   asteps=None, wsteps=None,
+                                   axes=None, toend=True)
+        reverse = reverse_slide.reshape(reverse_slide.shape[0], WX, 4, 1)
 
-        return seq
+        return seq, reverse
 
 def _parse_arguments(args=None):
     parser = argparse.ArgumentParser()
@@ -76,6 +98,8 @@ def _parse_arguments(args=None):
                         help='''first chromosome used for prediction''')
     parser.add_argument('--stop',
                         help='''last chromosome used for prediction''')
+    parser.add_argument('-r', '--reverse', action='store_true',
+                        help='''predict the annotation in both strand''')
     return parser.parse_args(args)
 
 def main(command_line_arguments=None):
@@ -87,9 +111,10 @@ def main(command_line_arguments=None):
     
     if not command_line_arguments:
         # if we are using the prediction outside of a prediction session
-        path_to_model = os.path.join(os.path.dirname(args.weights),
+        path_to_model = os.path.join(os.path.dirname(__file__),
                                      'Results_multi',
-                                     args.weights)
+                                     os.path.basename(os.path.dirname(args.weights)),
+                                     os.path.basename(args.weights))
     else:
         # if we are using in a prediction session that already treat the file 
         # name.
@@ -100,12 +125,17 @@ def main(command_line_arguments=None):
 
     for num_chr in range(int(args.start), int(args.stop) + 1):
         data = DataLoader(directory, num_chr)
-        x_test = data.process()
+        x_test, x_test_rev = data.process()
         y_pred = model.predict(x_test)
 
         bedfile_ = pd.DataFrame()
         bedfile_['prediction'] = y_pred[:, 0]
+                                 
         bedfile_['Chr'] = 'chr' + str(num_chr)
+        
+        if args.reverse:
+            y_pred_rev = model.predict(x_test_rev)
+            bedfile_['prediction_rev'] = np.flip(y_pred_rev[:, 0], axis=0)
         bedfile = bedfile.append(bedfile_)
     
     if args.output_dir:
@@ -116,7 +146,8 @@ def main(command_line_arguments=None):
                                     '.csv'))
     else:
         bedfile.to_csv(os.path.join(os.path.dirname(path_to_model),
-                                    'y_pred_' + args.weights[8:-5] + \
+                                    'y_pred_' + \
+                                    os.path.basename(args.weights)[8:-5] + \
                                     '_predict_' + os.path.basename(directory) + \
                                     '.csv'))
 

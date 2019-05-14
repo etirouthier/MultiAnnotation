@@ -84,9 +84,15 @@ def generating_tss(max_chr, refGene_file, directory):
         refGene_new: csv file with the genes positions on the specie.
         directory: name of the directory containing the DNA sequence 
     """
-    index = range(1, int(max_chr) + 1)
-
     path_to_directory = os.path.abspath(directory)
+    index = []
+    
+    # suppressing gaps in chromosome naming (for ex: chr2A will lead to the 
+    #lack of chr2 or for scaffold could be difficult to anticipate)
+    for i in range(0, int(max_chr) + 1):
+        if os.path.exists(os.path.join(path_to_directory,
+                                       'chr' + str(i) + '.hdf5')):
+            index.append(i)
     
     try:
         refGene_new = pd.read_csv(refGene_file)
@@ -164,8 +170,15 @@ def generating_non_tss(max_chr, n, refGene_file, directory):
         refGene_new: csv file with the genes positions on the specie.
         directory: name of the directory containing the DNA sequence
     """
-    index = range(1, int(max_chr) + 1)
     path_to_directory = os.path.abspath(directory)
+    index = []
+    
+    # suppressing gaps in chromosome naming (for ex: chr2A will lead to the 
+    #lack of chr2)
+    for i in range(1, int(max_chr) + 1):
+        if os.path.exists(os.path.join(path_to_directory,
+                                       'chr' + str(i) + '.hdf5')):
+            index.append(i)
 
     try:
         refGene_new = pd.read_csv(refGene_file)

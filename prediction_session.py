@@ -45,7 +45,7 @@ def prediction_analysis(filename, annotation_file, num):
         Args:
             filename: the name of the prediction file that we want to analyse
             annotation_file: a csv file with the position of the annotation
-            num: the chromosome number on which the analysis will be made
+            num: str, the chromosome number on which the analysis will be made
     """
     WX = 299
     HALF_WX = WX // 2
@@ -166,7 +166,9 @@ def main(command_line_arguments=None):
                             args.start)
     
     os.remove(os.path.join(results_dir, 'y_pred_CNN_' + args.annotation + \
-                           '_' + args.training_specie + '.csv'))    
+                                         '_' + args.training_specie + \
+                                         '_predict_' + args.predicted_specie + \
+                                         '.csv'))    
 
 if __name__ == '__main__':
     main()
