@@ -40,7 +40,7 @@ def _analysis_report(assembly_report):
     dico = dict()
     for name in df['Sequence-Name'].values:
         if re.search('([Ss]caffold)?([Cc]hr)?(omosome)?.?\d+$', name) \
-        and df[df['Sequence-Name'] == name]['Sequence-Length'].values[0] > 120000000:
+        and df[df['Sequence-Name'] == name]['Sequence-Length'].values[0] > 50000:
             num = str(int(re.search('\d+$', name).group()))
             dico[df[df['Sequence-Name'] == name]['RefSeq-Accn'].values[0]] = \
             'chr' + num
