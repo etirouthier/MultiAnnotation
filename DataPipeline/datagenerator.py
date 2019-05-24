@@ -145,7 +145,7 @@ def generating_tss(max_chr, refGene_file, directory):
         reverse = np.flip(X_slide_stop, axis=1)
         X1 = np.append(X_slide_start, reverse, axis=0)
 
-        if i == 1:
+        if i == index[0]:
             res = X1
         else:
             res = np.append(res, X1, axis=0)
@@ -225,7 +225,7 @@ def generating_non_tss(max_chr, n, refGene_file, directory):
 
         conv_array = _convert_array_to_multi(C, len(positions)*int(n), 299)
 
-        if i == 1:
+        if i == index[0]:
             res = reorganize_random_multi_array(conv_array)
         else:
             res = np.append(res,

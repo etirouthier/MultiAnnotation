@@ -35,7 +35,9 @@ download_NCBI()
 	mv -f 'tmpfile' $assembly_rep
 	
 	echo creating a refGene.csv that match our standards ...
-	seq_type=`python ../analyse_refGene.py -f $refGene -a $assembly_rep`
+	table=`python ../analyse_refGene.py -f $refGene -a $assembly_rep`
+	seq_type=`echo $table | grep "[^0-9]\+" -o`
+	max_chr=`echo $table | grep "[0-9]\+" -o`
 
 	echo downloading the DNA sequences in fasta ...
 	
@@ -44,14 +46,8 @@ download_NCBI()
 		for i in `seq 1 $max_chr`
 		do
 			echo downloading chromosome $i ...
-			if [ $i -lt 10 ]
-			then
-				wget ftp://ftp.ncbi.nih.gov/genomes/$1/CHR_0$i/*.fa.gz &> /dev/null
-				mv *chr$i.fa.gz chr$i.fa.gz
-			else
-				wget ftp://ftp.ncbi.nih.gov/genomes/$1/CHR_$i/*.fa.gz &> /dev/null
-				mv *chr$i.fa.gz chr$i.fa.gz
-			fi
+			wget ftp://ftp.ncbi.nih.gov/genomes/$1/Assembled_chromosomes/seq/*chr$i.fa.gz &> /dev/null
+			mv *chr$i.fa.gz chr$i.fa.gz 
 		done
 	else
 		wget ftp://ftp.ncbi.nih.gov/genomes/$1/CHR_Un/*.fa.gz &> /dev/null
