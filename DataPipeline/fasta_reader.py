@@ -61,7 +61,7 @@ def _convertaline(aseq):
 
     while i < L:
         if i % 1000000 == 0:
-            print 'Already {} nucleotides have been converted'.format(i)
+            print('Already {} nucleotides have been converted'.format(i))
         aseqL[i] = _convertchar(aseq[i])
         i += 1
     return aseqL, L
@@ -83,7 +83,7 @@ def faconverter(filenamein, pathtofileout=False):
     else:
         raise ValueError("file must be a fasta file (or .fa.gz)")
         
-    print 'Converting the file : {}'.format(filenamein)  
+    print('Converting the file : {}'.format(filenamein)) 
     
     for seq_record in SeqIO.parse(fin, 'fasta'):
         vout = _convertaline(seq_record.seq)[0]

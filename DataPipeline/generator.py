@@ -72,7 +72,7 @@ def _nucleotid_arrays(path_to_directory, train, val):
                                     '.hdf5')
 
         f = h5py.File(path_to_file, 'r')
-        nucleotid_ = np.array(f[f.keys()[0]])
+        nucleotid_ = np.array(f['data'])
         f.close()
 
         if i == train_chr[0]:
@@ -85,7 +85,7 @@ def _nucleotid_arrays(path_to_directory, train, val):
                                     '.hdf5')
 
         f = h5py.File(path_to_file, 'r')
-        nucleotid_ = np.array(f[f.keys()[0]])
+        nucleotid_ = np.array(f['data'])
         f.close()
 
         if i == val_chr[0]:

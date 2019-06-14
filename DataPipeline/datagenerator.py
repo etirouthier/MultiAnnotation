@@ -101,10 +101,10 @@ def generating_tss(max_chr, refGene_file, directory):
     refGene_new = refGene_new.dropna(axis=1)
 
     for i in index:
-        print 'generating positively labeled sequences for chr' + str(i)
+        print('generating positively labeled sequences for chr' + str(i))
         f = h5py.File(os.path.join(path_to_directory,'chr' + str(i) + '.hdf5'),
                       'r')
-        seq = np.array(f[f.keys()[0]])
+        seq = np.array(f['data'])
         f.close()
 
         refGene_parsed_ = refGene_new[(refGene_new.Chr == 'chr' + str(i))]
@@ -187,10 +187,10 @@ def generating_non_tss(max_chr, n, refGene_file, directory):
     refGene_new = refGene_new.dropna(axis=1)
 
     for i in index:
-        print 'generating negatively labeled sequences for chr' + str(i)
+        print('generating negatively labeled sequences for chr' + str(i))
         f = h5py.File(os.path.join(path_to_directory,'chr' + str(i) + '.hdf5'),
                       'r')
-        seq = np.array(f[f.keys()[0]])
+        seq = np.array(f['data'])
         f.close()
 
         refGene_parsed = refGene_new[(refGene_new.Chr == 'chr' + str(i))]

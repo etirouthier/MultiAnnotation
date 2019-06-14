@@ -60,7 +60,7 @@ class DataLoader:
                                          self.directory + '/')
 
         f = h5py.File(path_to_directory + 'chr' + str(self.num_chr) + '.hdf5')
-        seq = np.array(f[f.keys()[0]])
+        seq = np.array(f['data'])
         f.close()
         
         reverse = self._reverse_dna(seq)

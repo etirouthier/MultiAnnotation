@@ -66,7 +66,7 @@ def _prepare_data(annotation, groupename, **species):
             x1_ = np.load(os.path.join(annotation_dir,
                                       'X1_start_' + annotation + '.npy'))
             
-            if specie == species.keys()[0]:
+            if specie == list(species.keys())[0]:
                 x0 = x0_
                 x1 = x1_
             else:

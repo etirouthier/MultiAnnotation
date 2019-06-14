@@ -95,7 +95,7 @@ def main():
         txt_to_csv(args.file)
     else:
         seq_type = gff3_to_csv(args.file, args.assembly_report)
-        print seq_type
+        print(seq_type)
 
 if __name__ == '__main__':
     main()
